@@ -32,9 +32,9 @@ class Cell
     draw_self
     live_neighbors = count_live_neighbors
 
-    if !@alive and live_neighbors == 3
+    if !@alive and live_neighbors > 2 and live_neighbors < 7
       @alive = true
-    elsif live_neighbors < 2 or live_neighbors > 3
+    elsif live_neighbors < 2 or live_neighbors >= 7
       @alive = false
       @age = 0
     end
@@ -50,6 +50,9 @@ class Cell
       end
       if @age > 6
         @current_color = 'blue'
+      end
+      if @age > 8
+        @alive = false
       end
     else
       @current_color = 'white'
