@@ -6,26 +6,21 @@ class Cell
     @alive = alive
     @index_x = index_x
     @index_y = index_y
-    @draw_state_dirty = true
-    @current_color = 'white'
+    @current_color = alive ? 'yellow' : 'white'
     @size = 10
     @x = (index_x * @size) + start_x
     @y = (index_y * @size) + start_y
     @grid_width = grid_width
-    @square = nil
-  end
-
-  def draw_self
-    if @draw_state_dirty
-      if @square.nil?
-        @square = Square.new(
+    @square = Square.new(
           x: @x, y: @y,   # Position
           size: @size - 1,         # Side length
           color: @current_color    # Color
         )
-      end
-      @square.color = @current_color
-    end
+    @age = 0
+  end
+
+  def draw_self
+    @square.color = @current_color
   end
 
   # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -35,18 +30,29 @@ class Cell
 
   def update
     draw_self
-
-    @draw_state_dirty = false
     live_neighbors = count_live_neighbors
 
     if !@alive and live_neighbors == 3
       @alive = true
-      @current_color = 'green'
-      @draw_state_dirty = true
     elsif live_neighbors < 2 or live_neighbors > 3
       @alive = false
+      @age = 0
+    end
+
+    if @alive
+      @age += 1
+
+      if @age == 1
+        @current_color = 'yellow'
+      end
+      if @age > 2
+        @current_color = 'green'
+      end
+      if @age > 6
+        @current_color = 'blue'
+      end
+    else
       @current_color = 'white'
-      @draw_state_dirty = true
     end
   end
 
