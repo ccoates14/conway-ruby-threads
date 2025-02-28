@@ -7,7 +7,7 @@ class Cell
     @index_x = index_x
     @index_y = index_y
     @draw_state_dirty = true
-    @current_color = alive ? 'green' : 'white'
+    @current_color = 'white'
     @size = 10
     @x = (index_x * @size) + start_x
     @y = (index_y * @size) + start_y
@@ -35,79 +35,58 @@ class Cell
 
   def update
     draw_self
+
     @draw_state_dirty = false
-
-    # update stuff
-    # if something changes we mark drawstate dirty
-    # dirty state changes if it gets hungrier or dies
-
-    #count number of neighbors alive
     live_neighbors = count_live_neighbors
 
     if !@alive and live_neighbors == 3
       @alive = true
+      @current_color = 'green'
       @draw_state_dirty = true
     elsif live_neighbors < 2 or live_neighbors > 3
       @alive = false
+      @current_color = 'white'
       @draw_state_dirty = true
     end
-
-     @current_color = @alive ? 'green' : 'white'
   end
 
   def count_live_neighbors
     live_neighbors = 0
 
     #top
-    if @index_y - 1 >= 0
-      if @grid[@index_y - 1][@index_x].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y - 1) % @grid.length][@index_x].alive
+      live_neighbors += 1
     end
     #topleft
-    if @index_y - 1 >= 0 and @index_x - 1 >= 0
-      if @grid[@index_y - 1][@index_x - 1].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y - 1) % @grid.length][(@index_x - 1) % @grid_width].alive
+      live_neighbors += 1
     end
     #topright
-    if @index_y - 1 >= 0 and @index_x + 1 < @grid_width
-      if @grid[@index_y - 1][@index_x + 1].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y - 1) % @grid.length][(@index_x + 1) % @grid_width].alive
+      live_neighbors += 1
     end
 
     #left
-    if @index_x - 1 >= 0
-      if @grid[@index_y][@index_x - 1].alive
-        live_neighbors += 1
-      end
+    if @grid[@index_y][(@index_x - 1) % @grid_width].alive
+      live_neighbors += 1
     end
 
     #right
-    if @index_x + 1 < @grid_width
-      if @grid[@index_y][@index_x + 1].alive
-        live_neighbors += 1
-      end
+    if @grid[@index_y][(@index_x + 1) % @grid_width].alive
+      live_neighbors += 1
     end
 
     #bottom
-    if @index_y + 1 < @grid.length
-      if @grid[@index_y + 1][@index_x].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y + 1) % @grid.length][@index_x].alive
+      live_neighbors += 1
     end
     #bottomleft
-    if @index_y + 1 < @grid.length and @index_x - 1 >= 0
-      if @grid[@index_y + 1][@index_x - 1].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y + 1) % @grid.length][(@index_x - 1) % @grid_width].alive
+      live_neighbors += 1
     end
     #bottomright
-    if @index_y + 1 < @grid.length and @index_x + 1 < @grid_width
-      if @grid[@index_y + 1][@index_x + 1].alive
-        live_neighbors += 1
-      end
+    if @grid[(@index_y + 1) % @grid.length][(@index_x + 1) % @grid_width].alive
+      live_neighbors += 1
     end
 
     live_neighbors
