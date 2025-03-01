@@ -31,8 +31,8 @@ end
 
 window = GameWindow.new
 
-GRID_WIDTH = 130
-GRID_HEIGHT = 130
+GRID_WIDTH = 150
+GRID_HEIGHT = 150
 START_X = 140
 START_Y = 0
 
@@ -94,8 +94,6 @@ mutex = Mutex.new
     while true
       rows_to_update.each do |row|
         row.each do |c|
-          c.draw_self
-
           mutex.synchronize do
             c.update
           end

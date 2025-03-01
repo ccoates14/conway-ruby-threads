@@ -21,7 +21,7 @@ class Cell
   end
 
   def draw_self
-    @window.draw_rect(@x, @y, 5, 5, @current_color)
+    @window.draw_rect(@x, @y, 3, 3, @current_color)
   end
 
   # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -45,15 +45,12 @@ class Cell
 
       if @age == 1
         @current_color = NEW_BORN
-      end
-      if @age > 2
-        @current_color = ADULT
-      end
-      if @age > 6
+      elsif @age > 8
+      @alive = false
+      elsif @age > 6
         @current_color = OLD_ADULT
-      end
-      if @age > 8
-        @alive = false
+      elsif @age > 2
+        @current_color = ADULT
       end
     else
       @current_color = DEAD
