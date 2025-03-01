@@ -1,28 +1,26 @@
 require 'gosu'
 
+DEAD = Gosu::Color::WHITE
+NEW_BORN = Gosu::Color::RED
+ADULT = Gosu::Color::YELLOW
+OLD_ADULT = Gosu::Color::BLUE
+
 class Cell
   def initialize(grid, alive, index_x, index_y, start_x, start_y, grid_width, window)
     @grid = grid
     @alive = alive
     @index_x = index_x
     @index_y = index_y
-    @current_color = alive ? Gosu::Color::YELLOW : Gosu::Color::WHITE
+    @current_color = alive ? NEW_BORN : DEAD
     @size = 10
     @x = (index_x * @size) + start_x
     @y = (index_y * @size) + start_y
     @grid_width = grid_width
-    # @square = Square.new(
-    #       x: @x, y: @y,   # Position
-    #       size: @size - 1,         # Side length
-    #       color: @current_color    # Color
-    #     )
     @age = 0
     @window = window
   end
 
   def draw_self
-    # @square.color = @current_color
-
     @window.draw_rect(@x, @y, 5, 5, @current_color)
   end
 
@@ -46,19 +44,19 @@ class Cell
       @age += 1
 
       if @age == 1
-        @current_color = Gosu::Color::YELLOW
+        @current_color = NEW_BORN
       end
       if @age > 2
-        @current_color = Gosu::Color::GREEN
+        @current_color = ADULT
       end
       if @age > 6
-        @current_color = Gosu::Color::BLUE
+        @current_color = OLD_ADULT
       end
       if @age > 8
         @alive = false
       end
     else
-      @current_color = Gosu::Color::WHITE
+      @current_color = DEAD
     end
   end
 

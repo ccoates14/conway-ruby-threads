@@ -11,21 +11,14 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    max_draw = 100
-    current_draw_it = 0
-
-    while current_draw_it < max_draw or !@rect_draw_queue.empty?
+    while !@rect_draw_queue.empty?
       rect = @rect_draw_queue.pop
 
       Gosu.draw_rect(rect[:x], rect[:y], rect[:w], rect[:h], rect[:color])
-
-      current_draw_it += 1
     end
   end
 
   def draw_rect(x, y, w, h, color)
-    #Gosu::Color::GREEN
-   # Gosu.draw_rect(x, y, w, h, color)
     @rect_draw_queue << {
       x:,
       y:,
@@ -69,7 +62,7 @@ for i in 0..GRID_HEIGHT
   grid.push(cells)
 end
 
-THREAD_COUNT = 10
+THREAD_COUNT = 5
 threads_rows = []
 threads = []
 
