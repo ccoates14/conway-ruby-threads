@@ -1,26 +1,29 @@
-
+require 'gosu'
 
 class Cell
-  def initialize(grid, alive, index_x, index_y, start_x, start_y, grid_width)
+  def initialize(grid, alive, index_x, index_y, start_x, start_y, grid_width, window)
     @grid = grid
     @alive = alive
     @index_x = index_x
     @index_y = index_y
-    @current_color = alive ? 'yellow' : 'white'
+    @current_color = alive ? Gosu::Color::YELLOW : Gosu::Color::WHITE
     @size = 10
     @x = (index_x * @size) + start_x
     @y = (index_y * @size) + start_y
     @grid_width = grid_width
-    @square = Square.new(
-          x: @x, y: @y,   # Position
-          size: @size - 1,         # Side length
-          color: @current_color    # Color
-        )
+    # @square = Square.new(
+    #       x: @x, y: @y,   # Position
+    #       size: @size - 1,         # Side length
+    #       color: @current_color    # Color
+    #     )
     @age = 0
+    @window = window
   end
 
   def draw_self
-    @square.color = @current_color
+    # @square.color = @current_color
+
+    @window.draw_rect(@x, @y, 5, 5, @current_color)
   end
 
   # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -43,19 +46,19 @@ class Cell
       @age += 1
 
       if @age == 1
-        @current_color = 'yellow'
+        @current_color = Gosu::Color::YELLOW
       end
       if @age > 2
-        @current_color = 'green'
+        @current_color = Gosu::Color::GREEN
       end
       if @age > 6
-        @current_color = 'blue'
+        @current_color = Gosu::Color::BLUE
       end
       if @age > 8
         @alive = false
       end
     else
-      @current_color = 'white'
+      @current_color = Gosu::Color::WHITE
     end
   end
 
